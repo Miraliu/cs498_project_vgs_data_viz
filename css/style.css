@@ -1,0 +1,5 @@
+.row { height: 100vh; margin: 0; padding: 3%}
+.col, .col-md-8 {padding: 2% 5% 2% 5%;}
+.bg-dark {color: #eee;}
+.inner-text {color: #eee}
+.tooltip {background-color: #e3e3e3; min-width: 50px; position: absolute; z-index: 10; padding: 5px; border: #2b2b2b 1px solid; border-radius: 3px}
