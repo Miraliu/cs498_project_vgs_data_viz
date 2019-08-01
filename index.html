@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Video Game Sale Data Visualization</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -12,10 +12,10 @@
     <div id="tooltip" class="tooltip text-center"></div>
     <div class="row align-items-center d-md-flex flex-md-equal w-100  bg-light">
         <div class="col-md-12 bg-dark text-left" style="height: 20%">
-            <div class="inner-text">This is a chart</div>
+            <div class="inner-text h1">New Video Games, 1979-2019</div>
         </div>
         <div class="col-md-12 bg-light align-center" style="height: 80%">
-            <svg id='chart-1' height="100%" width="100%"></svg>
+            <svg id='intro_chart' height="100%" width="100%"><g></g></svg>
         </div>
     </div>
 </div>
@@ -30,8 +30,22 @@
 <script src="js/chart_utils.js"></script>
 <script>
     $(function () {
-        var colors = d3.scaleSequential().domain([0, 25]).interpolator(d3.interpolateRainbow);
-
+        var area_data = [];
+        async function init() {
+            for (y in years) {
+                var data_dict = {'year': years[y]};
+                var annual_data = await d3.csv('https://miraliu.github.io/cs498_project_vgs_data_viz/data/' + years[y] + '_platform_game_count.csv');
+                for(var i = 0, l = platforms.length; i < l; i++) {
+                    data_dict[platforms[i]] = 0;
+                }
+                for(var i = 0, l = annual_data.length; i < l; i++) {
+                    data_dict[annual_data[i]['Platform']] = parseInt(annual_data[i]['Name']);
+                }
+                area_data.push(data_dict);
+            }
+            create_area_chart('intro_chart', area_data);
+        }
+        init();
         
     });
 </script>
