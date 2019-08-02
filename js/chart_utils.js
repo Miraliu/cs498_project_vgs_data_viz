@@ -17,7 +17,7 @@ const years = ['1979', '1980', '1981', '1982', '1983', '1984', '1985', '1986', '
         '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', 
         '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019']
 
-const colors = d3.scaleSequential().domain([0, genres.size() + 1]).interpolator(d3.interpolateRainbow);
+const colors = d3.scaleSequential().domain([0, genres.length + 1]).interpolator(d3.interpolateCool);
 
 function create_stacked_bar_chart(canvas_id, data) {
     var canvas = $('#'+canvas_id);
@@ -129,13 +129,15 @@ function create_packed_chart(canvas_id, data) {
 
 function create_area_chart(canvas_id, data) {
     var canvas = $('#'+canvas_id);
-    var height = canvas.height();
-    var width = canvas.width();
+    var height = canvas.height() - 50;
+    var width = canvas.width() - 60;
     var chart = d3.select('#'+canvas_id);
+    var tooltip = d3.select('#tooltip');
     var margin = 50;
-    var ys = d3.scaleLinear().domain([0, 5000]).range([height, margin]);
+    var ys = d3.scaleLinear().domain([0, 5000]).range([height - 50, 0]);
+    var xs = d3.scaleBand().domain(years).range([0, width]);
     var area = d3.area()
-                .x(function(d, i) {return i * (width - margin) / 40 + margin})
+                .x(function(d, i) {return i * width / 40})
                 .y0(function(d, i) {return ys(d[0])})
                 .y1(function(d, i) {return ys(d[1])});
     var stack = d3.stack().keys(genres);
@@ -156,5 +158,27 @@ function create_area_chart(canvas_id, data) {
         .attr('d', area);
 
     chart.append('g').attr('transform', 'translate(50,50)').call(d3.axisLeft(ys).tickFormat(d3.format("~s")));
+    chart.append('g').attr("transform", "translate(50," + height + ")").call(d3.axisBottom(xs).tickValues([1980,1990,2000,2010,2019]));
 
+    chart.selectAll("legendrect")
+        .data(genres)
+        .enter()
+        .append("rect")
+        .attr("x", width - 60)
+        .attr("y", function(d,i){return 10 + i * 13})
+        .attr("width", 10)
+        .attr("height", 10)
+        .style("fill", function(d, i){ return colors(i)})
+
+    chart.selectAll("legendlabel")
+        .data(genres)
+        .enter()
+        .append("text")
+        .attr("x", width - 60 + 12)
+        .attr("y", function(d,i){return 10 + i * 13 + 5})
+        .style("fill", '#a1a1a1')
+        .style("font-size", '0.7em')
+        .text(function(d){ return d})
+        .attr("text-anchor", "left")
+        .style("alignment-baseline", "middle")
 }
