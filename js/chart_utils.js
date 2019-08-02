@@ -7,12 +7,17 @@ const platforms = ['Wii', 'NES', 'PC', 'GB', 'DS', 'X360', 'SNES', 'PS3', 'PS4',
        'ACPC', 'C64', 'BRW', 'AJ', 'ZXS', 'NGage', 'GIZ', 'WinP', 'iQue',
        'iOS', 'Arc', 'ApII', 'Aco', 'BBCM', 'TG16', 'CDi', 'CD32', 'Int']
 
+const genres = ['Sports', 'Platform', 'Racing', 'Shooter', 'Role-Playing',
+       'Puzzle', 'Party', 'Simulation', 'Action',
+       'Action-Adventure', 'Fighting', 'Strategy', 'Adventure', 'Music',
+       'MMO', 'Sandbox', 'Visual Novel', 'Board Game', 'Education']
+
 const years = ['1979', '1980', '1981', '1982', '1983', '1984', '1985', '1986', '1987', 
         '1988', '1989', '1990', '1991', '1992', '1993', '1994', '1995', '1996', '1997', '1998', 
         '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', 
         '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019']
 
-const colors = d3.scaleSequential().domain([0, 80]).interpolator(d3.interpolateRainbow);
+const colors = d3.scaleSequential().domain([0, genres.size() + 1]).interpolator(d3.interpolateRainbow);
 
 function create_stacked_bar_chart(canvas_id, data) {
     var canvas = $('#'+canvas_id);
@@ -127,26 +132,27 @@ function create_area_chart(canvas_id, data) {
     var height = canvas.height();
     var width = canvas.width();
     var chart = d3.select('#'+canvas_id);
-    var ys = d3.scaleLinear().domain([0, 5000]).range([height, 0]);
+    var margin = 50;
+    var ys = d3.scaleLinear().domain([0, 5000]).range([height, margin]);
     var area = d3.area()
-                .x(function(d, i) {return i * width / 40})
+                .x(function(d, i) {return i * (width - margin) / 40 + margin})
                 .y0(function(d, i) {return ys(d[0])})
                 .y1(function(d, i) {return ys(d[1])});
-    var stack = d3.stack().keys(platforms);
+    var stack = d3.stack().keys(genres);
 
     var stacked = stack(data);
 
     chart.select('g')
-        .attr('transform', 'translate(50,0)')
+        .attr('transform', 'translate(50, 50)')
         .selectAll('path')
         .data(stacked)
         .enter()
         .append('path')
-        .transition()
-        .duration(500)
         .style('fill', function(d, i) {
             return colors(i);
         })
+        .transition()
+        .duration(1500)
         .attr('d', area);
 
     chart.append('g').attr('transform', 'translate(50,50)').call(d3.axisLeft(ys).tickFormat(d3.format("~s")));

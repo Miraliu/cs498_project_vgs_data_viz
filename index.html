@@ -11,10 +11,10 @@
 <div class="container-fluid main">
     <div id="tooltip" class="tooltip text-center"></div>
     <div class="row align-items-center d-md-flex flex-md-equal w-100  bg-light">
-        <div class="col-md-12 bg-dark text-left" style="height: 20%">
-            <div class="inner-text h1">New Video Games, 1979-2019</div>
+        <div class="col col-md-3 bg-dark text-left">
+            <div class="inner-text h2">New Video Games by Genre, 1979-2019</div>
         </div>
-        <div class="col-md-12 bg-light align-center" style="height: 80%">
+        <div class="col col-md-9 bg-light align-center">
             <svg id='intro_chart' height="100%" width="100%"><g></g></svg>
         </div>
     </div>
@@ -34,12 +34,12 @@
         async function init() {
             for (y in years) {
                 var data_dict = {'year': years[y]};
-                var annual_data = await d3.csv('https://miraliu.github.io/cs498_project_vgs_data_viz/data/' + years[y] + '_platform_game_count.csv');
-                for(var i = 0, l = platforms.length; i < l; i++) {
-                    data_dict[platforms[i]] = 0;
+                var annual_data = await d3.csv('https://miraliu.github.io/cs498_project_vgs_data_viz/data/' + years[y] + '_genre_game_count.csv');
+                for(var i = 0, l = genres.length; i < l; i++) {
+                    data_dict[genres[i]] = 0;
                 }
                 for(var i = 0, l = annual_data.length; i < l; i++) {
-                    data_dict[annual_data[i]['Platform']] = parseInt(annual_data[i]['Name']);
+                    data_dict[annual_data[i]['Genre']] = parseInt(annual_data[i]['Name']);
                 }
                 area_data.push(data_dict);
             }
