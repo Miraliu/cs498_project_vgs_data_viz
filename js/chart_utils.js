@@ -17,7 +17,7 @@ const years = ['1979', '1980', '1981', '1982', '1983', '1984', '1985', '1986', '
         '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', 
         '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019']
 
-const colors = d3.scaleSequential().domain([0, genres.length + 1]).interpolator(d3.interpolateCool);
+const colors = d3.scaleSequential().domain([0, genres.length + 1]).interpolator(d3.interpolateRainbow);
 
 function create_stacked_bar_chart(canvas_id, data) {
     var canvas = $('#'+canvas_id);
@@ -72,7 +72,7 @@ function create_stacked_bar_chart(canvas_id, data) {
         );
 }
 
-function create_packed_chart(canvas_id, data) {
+function create_packed_chart(canvas_id, data, value_key) {
     var canvas = $('#'+canvas_id);
     var height = canvas.height();
     var width = canvas.width();
@@ -80,29 +80,31 @@ function create_packed_chart(canvas_id, data) {
     var chart = d3.select('#'+canvas_id);
     var tooltip = d3.select('#tooltip');
     var root = d3.hierarchy(data);
-    var packLayout = d3.pack();
+    var packLayout = d3.treemap();
     packLayout.size([width, height]);
     root.sum(function(d) {
-        return d.value;
+        return d[value_key];
     });
     packLayout(root);
     tooltip.style("opacity", 0);
     chart.append('g');
 
-    var nodes = d3.select('svg g')
-        .selectAll('g')
-        .data(root.descendants())
-        .enter()
-        .append('g')
-        .attr('transform', function(d) {return 'translate(' + [d.x, d.y] + ')'});
+    var nodes = chart.select('g')
+                  .selectAll('g')
+                  .data(root.descendants())
+                  .enter()
+                  .append('g')
+                  .attr('transform', function(d) {return 'translate(' + [d.x0, d.y0] + ')'})
 
     nodes
-        .append('circle')
-        .attr('fill', function (d, i) {return d.data.color})
+        .append('rect')
+        .attr('width', function(d) { return d.x1 - d.x0; })
+        .attr('height', function(d) { return d.y1 - d.y0; })
+        .attr('fill', function (d, i) {return colors(genres.indexOf(d.data['Genre']))})
         .attr('r', function(d) { return d.r; })
         .on('mouseover', function (d) {
             tooltip
-                .html('<p>' + d.data.name + '<p>')
+                .html('<p>' + d.data['Genre'] + ': ' + d.data[value_key] + '<p>')
                 .style("left", (d3.event.pageX) + "px")
                 .style("top", (d3.event.pageY) + "px")
                 .transition()
@@ -115,19 +117,10 @@ function create_packed_chart(canvas_id, data) {
                 .duration(500)
                 .style("opacity", 0);
         });
-
-    nodes
-        .append('text')
-        .attr('dx', -14)
-        .attr('dy', 4)
-        .attr('fill', '#eee')
-        .text(function(d) {
-            return d.children === undefined ? d.data.name : '';
-        })
 }
 
 
-function create_area_chart(canvas_id, data) {
+function create_area_chart(canvas_id, data, keys) {
     var canvas = $('#'+canvas_id);
     var height = canvas.height() - 50;
     var width = canvas.width() - 60;
@@ -140,7 +133,7 @@ function create_area_chart(canvas_id, data) {
                 .x(function(d, i) {return i * width / 40})
                 .y0(function(d, i) {return ys(d[0])})
                 .y1(function(d, i) {return ys(d[1])});
-    var stack = d3.stack().keys(genres);
+    var stack = d3.stack().keys(keys);
 
     var stacked = stack(data);
 

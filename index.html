@@ -10,12 +10,31 @@
 <body>
 <div class="container-fluid main">
     <div id="tooltip" class="tooltip text-center"></div>
-    <div class="row align-items-center d-md-flex flex-md-equal w-100  bg-light">
+    <div id='slide-1' class="row align-items-center d-md-flex flex-md-equal w-100 bg-light">
         <div class="col col-md-3 bg-dark text-left">
-            <div class="inner-text h2">New Video Games by Genre, 1979-2019</div>
+            <div class="inner-text h3">New Video Games by Genre<br />1979-2019</div>
+            <a class="btn btn-light btn-xl" href="#slide-2">Next</a>
         </div>
         <div class="col col-md-9 bg-light align-center">
             <svg id='intro_chart' height="100%" width="100%"><g></g></svg>
+        </div>
+    </div>
+
+    <div id='slide-2' class="row align-items-center d-md-flex flex-md-equal w-100 bg-light">
+        <div class="col col-md-3 bg-dark text-left">
+            <div class="inner-text h2">Number of Games Released VS Total Game Sale for Each Genre</div>
+            <div class="btn-group" role="group">
+              <a class="btn btn-light btn-secondary" href="#slide-1">Prev</a>
+              <a class="btn btn-light btn-secondary" href="#slide-3">Next</a>
+            </div>
+        </div>
+        <div class="col col-md-9 bg-light align-center">
+            <div class="col col-md-12 bg-light align-center" style="height: 50%">
+                <svg id='genre-count' height="90%" width="90%"><g></g></svg>
+            </div>
+            <div class="col col-md-12 bg-light align-center" style="height: 50%">
+                <svg id='genre-sale' height="90%" width="90%"><g></g></svg>
+            </div>
         </div>
     </div>
 </div>
@@ -31,7 +50,7 @@
 <script>
     $(function () {
         var area_data = [];
-        async function init() {
+        async function create_main_chart() {
             for (y in years) {
                 var data_dict = {'year': years[y]};
                 var annual_data = await d3.csv('https://miraliu.github.io/cs498_project_vgs_data_viz/data/' + years[y] + '_genre_game_count.csv');
@@ -43,9 +62,29 @@
                 }
                 area_data.push(data_dict);
             }
-            create_area_chart('intro_chart', area_data);
+            create_area_chart('intro_chart', area_data, genres);
         }
-        init();
+        create_main_chart();
+
+        async function create_genre_chart() {
+            var count_data_json = {'name': 'Total Games', 'children': []};
+            var sale_data_json = {'name': 'Total Copies Sold', 'children': []};
+            count_data = await d3.csv('https://miraliu.github.io/cs498_project_vgs_data_viz/data/total_genre_game_count.csv');
+            for(var i = 0, l = count_data.length; i < l; i++) {
+                console.log(count_data[i])
+                count_data[i]['Name'] = parseInt(count_data[i]['Name']);
+                count_data_json['children'].push(count_data[i]);
+            }
+            sale_data = await d3.csv('https://miraliu.github.io/cs498_project_vgs_data_viz/data/total_genre_game_shipped.csv');
+            for(var i = 0, l = sale_data.length; i < l; i++) {
+                sale_data[i]['Total_Shipped'] = parseInt(sale_data[i]['Total_Shipped']);
+                sale_data_json['children'].push(sale_data[i]);
+            }
+            console.log(count_data_json);
+            create_packed_chart('genre-count', count_data_json, 'Name');
+            create_packed_chart('genre-sale', sale_data_json, 'Total_Shipped');
+        }
+        create_genre_chart();
         
     });
 </script>
