@@ -10,10 +10,24 @@
 <body>
 <div class="container-fluid main">
     <div id="tooltip" class="tooltip text-center"></div>
+    <div id='top' class="row align-items-center d-md-flex flex-md-equal w-100 bg-light">
+        <div class="col col-md-12 bg-dark text-center full-height" style="padding-top: 10%">
+            <p class="inner-text h1">Video Game Data Visualization</p>
+            <p class="inner-text">Drill down story for historical video game release data. </p>
+            <a class="inner-text" href="https://www.kaggle.com/ashaheedq/video-games-sales-2019">Original data set on Kaggle</a>
+            <p class="text-muted">CS498 Summer 2019 Final Project<br />simiaol2@illinois.edu</p> 
+            <a class="btn btn-light btn-xl" href="#slide-1">Next</a>
+        </div>
+    </div>
+
     <div id='slide-1' class="row align-items-center d-md-flex flex-md-equal w-100 bg-light">
         <div class="col col-md-3 bg-dark text-left">
             <div class="inner-text h3">New Video Games by Genre<br />1979-2019</div>
-            <a class="btn btn-light btn-xl" href="#slide-2">Next</a>
+            <p class="inner-text">Video game industry has grown from nothingness into a multi-billion business in the past 40 years. The growth peaked at 2009, followed by a down-turn in 2010-2012. The market has stablized since then.</p>
+            <div class="btn-group" role="group">
+                <a class="btn btn-light btn-secondary" href="#slide-2">View detail by year</a>
+                <a class="btn btn-light btn-secondary" href="#slide-3">View detail by genre</a>
+            </div>
         </div>
         <div class="col col-md-9 bg-light align-center">
             <svg id='intro_chart' height="100%" width="100%"><g></g></svg>
@@ -22,19 +36,97 @@
 
     <div id='slide-2' class="row align-items-center d-md-flex flex-md-equal w-100 bg-light">
         <div class="col col-md-3 bg-dark text-left">
-            <div class="inner-text h2">Number of Games Released VS Total Game Sale for Each Genre</div>
-            <div class="btn-group" role="group">
-              <a class="btn btn-light btn-secondary" href="#slide-1">Prev</a>
-              <a class="btn btn-light btn-secondary" href="#slide-3">Next</a>
-            </div>
+            <div class="inner-text h2">Number of Games Released for Each Genre</div>
+            <div class="inner-text">Action, Adventure, Sports, Shooter, Role-Playing are the top 5 game genres. There is also plenty of innovation happening in the industry with attempts to create new class of games. Select a year below to view the genre composition of the year.</div>
+            <div class="form-group">
+                <label for="year-select">Select Year</label>
+                <select class="form-control" id="year-select">
+                    <option value="all" selected>All years</option>
+                    <option value="1979">1979</option>
+                    <option value="1980">1980</option>
+                    <option value="1981">1981</option>
+                    <option value="1982">1982</option>
+                    <option value="1983">1983</option>
+                    <option value="1984">1984</option>
+                    <option value="1985">1985</option>
+                    <option value="1986">1986</option>
+                    <option value="1987">1987</option>
+                    <option value="1988">1988</option>
+                    <option value="1989">1989</option>
+                    <option value="1990">1990</option>
+                    <option value="1991">1991</option>
+                    <option value="1992">1992</option>
+                    <option value="1993">1993</option>
+                    <option value="1994">1994</option>
+                    <option value="1995">1995</option>
+                    <option value="1996">1996</option>
+                    <option value="1997">1997</option>
+                    <option value="1998">1998</option>
+                    <option value="1999">1999</option>
+                    <option value="2000">2000</option>
+                    <option value="2001">2001</option>
+                    <option value="2002">2002</option>
+                    <option value="2003">2003</option>
+                    <option value="2004">2004</option>
+                    <option value="2005">2005</option>
+                    <option value="2006">2006</option>
+                    <option value="2007">2007</option>
+                    <option value="2008">2008</option>
+                    <option value="2009">2009</option>
+                    <option value="2010">2010</option>
+                    <option value="2011">2011</option>
+                    <option value="2012">2012</option>
+                    <option value="2013">2013</option>
+                    <option value="2014">2014</option>
+                    <option value="2015">2015</option>
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                </select>
+              </div>
+            <a class="btn btn-light btn-xl" href="#slide-1">Back</a>
         </div>
         <div class="col col-md-9 bg-light align-center">
-            <div class="col col-md-12 bg-light align-center" style="height: 50%">
+            <div class="col col-md-12 bg-light align-center">
                 <svg id='genre-count' height="90%" width="90%"><g></g></svg>
             </div>
-            <div class="col col-md-12 bg-light align-center" style="height: 50%">
-                <svg id='genre-sale' height="90%" width="90%"><g></g></svg>
+        </div>
+    </div>
+
+    <div id='slide-3' class="row align-items-center d-md-flex flex-md-equal w-100 bg-light">
+        <div class="col col-md-3 bg-dark text-left">
+            <div class="inner-text h3">Trend of New Video Games by Genre</div>
+            <div class="inner-text">While most classical genres follow the trend of development of the industry, There are some genres that starts to emerge during recent years such as Action-Adventure and Visual Novels. Select a genre below to view the trend.</div>
+            <div class="form-group">
+                <label for="genre-select">Select Genre</label>
+                <select class="form-control" id="genre-select">
+                    <option value="Sports">Sports</option>
+                    <option value="Platform">Platform</option>
+                    <option value="Racing">Racing</option>
+                    <option value="Shooter">Shooter</option>
+                    <option value="Role-Playing" selected>Role-Playing</option>
+                    <option value="Puzzle">Puzzle</option>
+                    <option value="Party">Party</option>
+                    <option value="Simulation">Simulation</option>
+                    <option value="Action">Action</option>
+                    <option value="Action-Adventure">Action-Adventure</option>
+                    <option value="Fighting">Fighting</option>
+                    <option value="Strategy">Strategy</option>
+                    <option value="Adventure">Adventure</option>
+                    <option value="Music">Music</option>
+                    <option value="Misc">Misc</option>
+                    <option value="MMO">MMO</option>
+                    <option value="Sandbox">Sandbox</option>
+                    <option value="Visual Novel">Visual Novel</option>
+                    <option value="Board Game">Board Game</option>
+                    <option value="Education">Education</option>
+                </select>
             </div>
+            <a class="btn btn-light btn-xl" href="#slide-1">Back</a>
+        </div>
+        <div class="col col-md-9 bg-light align-center">
+            <svg id='genre_chart' height="100%" width="100%"></svg>
         </div>
     </div>
 </div>
@@ -43,6 +135,7 @@
 <script src="https://d3js.org/d3.v5.min.js"></script>
 <script src="https://d3js.org/d3-ease.v1.min.js"></script>
 <script src="https://d3js.org/d3-transition.v1.min.js"></script>
+<script src="https://rawgit.com/susielu/d3-annotation/master/d3-annotation.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -63,28 +156,40 @@
                 area_data.push(data_dict);
             }
             create_area_chart('intro_chart', area_data, genres);
+            create_bar_chart('genre_chart', area_data, 'Role-Playing');
+            $('#genre-select').on('change', function () {
+                update_bar_chart('genre_chart', area_data, $(this).val());
+            })
         }
         create_main_chart();
 
-        async function create_genre_chart() {
-            var count_data_json = {'name': 'Total Games', 'children': []};
-            var sale_data_json = {'name': 'Total Copies Sold', 'children': []};
+        var count_data_json = {'name': 'Total Games', 'children': []};
+        async function create_genre_breakdown_chart() {
             count_data = await d3.csv('https://miraliu.github.io/cs498_project_vgs_data_viz/data/total_genre_game_count.csv');
             for(var i = 0, l = count_data.length; i < l; i++) {
-                console.log(count_data[i])
                 count_data[i]['Name'] = parseInt(count_data[i]['Name']);
                 count_data_json['children'].push(count_data[i]);
             }
-            sale_data = await d3.csv('https://miraliu.github.io/cs498_project_vgs_data_viz/data/total_genre_game_shipped.csv');
-            for(var i = 0, l = sale_data.length; i < l; i++) {
-                sale_data[i]['Total_Shipped'] = parseInt(sale_data[i]['Total_Shipped']);
-                sale_data_json['children'].push(sale_data[i]);
-            }
-            console.log(count_data_json);
             create_packed_chart('genre-count', count_data_json, 'Name');
-            create_packed_chart('genre-sale', sale_data_json, 'Total_Shipped');
+            $('#year-select').on('change', function(){
+                if ($(this).val() === 'all') {
+                    update_packed_chart('genre-count', count_data_json, 'Name');
+                } else if ($(this).val()) {
+                    var year_data_json = {'name': 'Total Games', 'children': []};
+                    var year_data = area_data[years.indexOf($(this).val())];
+                    for(k in year_data) {
+                        if (k !== 'year') {
+                            var yd = {};
+                            yd['Genre'] = k;
+                            yd['Name'] = parseInt(year_data[k]);
+                            year_data_json['children'].push(yd);
+                        }
+                    }
+                    update_packed_chart('genre-count', year_data_json, 'Name');
+                }
+            });
         }
-        create_genre_chart();
+        create_genre_breakdown_chart();
         
     });
 </script>
